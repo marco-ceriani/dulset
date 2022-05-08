@@ -73,7 +73,6 @@ class Wheel {
             weight += this.wheel[i].weight;
         }
         const key = this.wheel[i].key
-        console.log(`Wheel picked ${key} [${i}], wheel is ${this.wheel.map(x => x.key)}`)
         const last = this.wheel.pop()
         if (i < last_index) {
             this.wheel[i] = last

@@ -1,38 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap');
+
+:root {
+    --clr-background: #fcffc1;
+    --clr-button: #d0d3a2;
+    --clr-primary-light: #9bf4d5;
+    --clr-primary: #1dad9b;
+    --clr-primary-dark: #346357;
+    --clr-accent: #ad1d2f;
+}
+
+button {
+    margin: 0;
+    border: none;
+    outline: none;
+}
+
+/* Typography */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    font-size: 1.25rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--clr-background);
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-block: 0.3em;
+}
+
+
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: var(--clr-primary-dark);
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-block-end: 0.3em;
+    padding-inline: 1em;
 }
 
-.App-link {
-  color: #61dafb;
+.btn {
+    font-size: 1.25rem;
+    padding-inline: 1em;
+    padding-block: 0.2em;
+    margin-block: 0.2em;
+    border-radius: 0.2em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-primary {
+    background-color: var(--clr-primary);
 }
+
+.icon {
+    height: 1em;
+    width: 1em;
+}
+
+/* Sections */
+
+main {
+    width: min(80vw, 800px);
+    margin-inline: auto;
+}
+
+#top-bar {
+    margin-block-end: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.question {
+    font-size: 2rem;
+    background-color: white;
+    border: 1px solid var(--clr-primary);
+    border-radius: 0.25em;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+.option-btn {
+    width: 100%;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 2.2rem;
+    padding-block: 0.15em;
+    background-color: var(--clr-background);
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
+}
+
+.option-btn:focus {
+    border: 1px solid #333;
+}
+
+.option-btn:active {
+    transform: scale(1.05);
+}
+
+.option-wrong {
+    background-color: var(--clr-accent);
+}
+.option-right {
+    background-color: var(--clr-primary);
+}
+

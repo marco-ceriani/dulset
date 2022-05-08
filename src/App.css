@@ -9,6 +9,12 @@
     --clr-accent: #ad1d2f;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 button {
     margin: 0;
     border: none;
@@ -42,6 +48,25 @@ h1 {
     flex-direction: column;
 }
 
+select {
+    appearance: none;
+    min-width: 15ch;
+    max-width: 20ch;
+
+    padding-block: 0.25em;
+    padding-inline: 0.5em;
+    margin: 0;
+
+    border: 1px solid var(--clr-primary);
+    border-radius: 0.25em;
+    background-color: white;
+
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    line-height: inherit;
+}
+
 .btn {
     font-size: 1.25rem;
     padding-inline: 1em;
@@ -49,15 +74,18 @@ h1 {
     margin-block: 0.2em;
     border: 1px solid;
     border-radius: 0.2em;
+    box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary {
+    background-color: var(--clr-primary-light);
     border-color: var(--clr-primary);
 }
 
-.btn-primary:enabled {
+.btn-primary:disabled {
     background-color: var(--clr-primary);
     border-color: var(--clr-primary-dark);
+    color: var(--clr-primary-dark);
 }
 
 .icon {
@@ -65,28 +93,28 @@ h1 {
     width: 1em;
 }
 
-/* Sections */
-
-header {
-    background-color: var(--clr-primary-dark);
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    margin-block-end: 0.3em;
-    padding-inline: 1em;
-}
-
-main {
+.container{
     width: min(80vw, 800px);
     margin-inline: auto;
 }
 
-#top-bar {
-    margin-block-end: 0.5rem;
+/* Sections */
+
+header {
+    background-color: var(--clr-primary-dark);
+    margin-block-end: 1em;
+}
+
+.top-bar {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    color: white;
+    padding-block: 0.5rem;
+}
+
+#quiz-select {
+    background-color: var(--clr-background);
 }
 
 .question {
@@ -110,9 +138,10 @@ main {
     font-size: 2.2rem;
     padding-block: 0.15em;
     background-color: var(--clr-background);
-    border: 1px solid #ddd;
+    border: 1px solid #bbb;
     border-radius: 0.5rem;
     box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .option-btn:focus {
@@ -125,8 +154,10 @@ main {
 
 .option-wrong {
     background-color: var(--clr-accent);
+    color: white;
 }
 .option-right {
     background-color: var(--clr-primary);
+    color: black;
 }
 

@@ -15,8 +15,12 @@ const OptionsGrid = (props) => {
                 if (item === answer) {
                     classes.push("option-wrong")
                 }
+                const handler = (!answer ? (event) => {
+                    onAnswer(item);
+                    event.stopPropagation();
+                } : () => void 0);
                 
-                return <button className={[classes.join(' ')]} key={index} onClick={() => onAnswer(item)}>
+                return <button className={[classes.join(' ')]} key={index} onClick={handler} disabled={answer != null}>
                     {item}
                 </button>
             })
@@ -27,15 +31,20 @@ const OptionsGrid = (props) => {
 
 function App() {
 
+    const [quizType, setQuizType] = useState("sino")
     const [question, setQuestion] = useState({options: []})
     const [answer, setAnswer] = useState(null)    
 
     useEffect(() => {
-        setQuestion(get_question('sino'))
-    }, [setQuestion])
+        setQuestion(get_question(quizType))
+    }, [quizType, setQuestion])
+
+    const handleQuizChange= (e) => {
+        setQuizType(e.target.value)
+    }
 
     const nextQuestion = () => {
-        setQuestion(get_question('sino'))
+        setQuestion(get_question(quizType))
         setAnswer(null)
     }
 
@@ -43,26 +52,29 @@ function App() {
         setAnswer(value);
     }
 
+    console.log(quizType)
+
     return (
         <div className="App">
-            <header className="App-header">
-                <h1>Korean Numbers</h1>
-            </header>
-            <main>
-                <section id="top-bar">
-                    <label>1 / 10</label>
+            <header>
+                <div className="container top-bar">
+                    <select id="quiz-select" onChange={handleQuizChange}>
+                        <option value="sino">Sino Korean</option>
+                        <option value="native">Native Korean</option>
+                        <option value="native-tens">Native Tens</option>
+                    </select>
                     <button className="btn btn-primary btn-small" id="btn-next"
-                        onClick={nextQuestion} disabled={answer == null}>
-                    <svg className="icon">
-                        <use xlinkHref="#chevron-right" />
-                    </svg>
+                            onClick={nextQuestion} disabled={answer == null}>
+                        <svg className="icon">
+                            <use xlinkHref="#chevron-right" />
+                        </svg>
                     </button>
-                </section>
-
+                </div>
+            </header>
+            <main className="container">
                 <section className="question">
                     { question.text }
                 </section>
-
                 <OptionsGrid options={question.options} correct={question.answer} answer={answer} onAnswer={handleAnswer}/>
             </main>
         </div>

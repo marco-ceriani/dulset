@@ -48,6 +48,8 @@ const select_table = (name) => {
         return native_numbers_units
     } else if (name === 'sino') {
         return sino_numbers
+    } else if (name === 'native-tens') {
+        return native_numbers_tens
     } else {
         throw Error('invalid table ' + name)
     }
@@ -81,7 +83,7 @@ class Wheel {
     }
 }
 
-export function get_question(type, length=4) {
+export function get_question(type, length = 4) {
 
     const table = select_table(type)
     const wheel = new Wheel(table)

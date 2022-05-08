@@ -33,7 +33,7 @@ h1 {
     margin-block: 0.3em;
 }
 
-
+/* Components */
 
 .App {
     text-align: center;
@@ -42,25 +42,22 @@ h1 {
     flex-direction: column;
 }
 
-.App-header {
-    background-color: var(--clr-primary-dark);
-    align-items: center;
-    justify-content: center;
-    color: white;
-    margin-block-end: 0.3em;
-    padding-inline: 1em;
-}
-
 .btn {
     font-size: 1.25rem;
     padding-inline: 1em;
     padding-block: 0.2em;
     margin-block: 0.2em;
+    border: 1px solid;
     border-radius: 0.2em;
 }
 
 .btn-primary {
+    border-color: var(--clr-primary);
+}
+
+.btn-primary:enabled {
     background-color: var(--clr-primary);
+    border-color: var(--clr-primary-dark);
 }
 
 .icon {
@@ -69,6 +66,16 @@ h1 {
 }
 
 /* Sections */
+
+header {
+    background-color: var(--clr-primary-dark);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-block-end: 0.3em;
+    padding-inline: 1em;
+}
 
 main {
     width: min(80vw, 800px);
@@ -84,6 +91,7 @@ main {
 
 .question {
     font-size: 2rem;
+    text-align: center;
     background-color: white;
     border: 1px solid var(--clr-primary);
     border-radius: 0.25em;

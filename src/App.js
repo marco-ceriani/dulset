@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { get_question } from './lib/numbers.js'
 
@@ -27,8 +27,12 @@ const OptionsGrid = (props) => {
 
 function App() {
 
-    const [question, setQuestion] = useState(get_question('sino'))
+    const [question, setQuestion] = useState({options: []})
     const [answer, setAnswer] = useState(null)    
+
+    useEffect(() => {
+        setQuestion(get_question('sino'))
+    }, [setQuestion])
 
     const nextQuestion = () => {
         setQuestion(get_question('sino'))
@@ -38,7 +42,6 @@ function App() {
     const handleAnswer = (value) => {
         setAnswer(value);
     }
-    console.log(answer, question.answer)
 
     return (
         <div className="App">
@@ -48,7 +51,8 @@ function App() {
             <main>
                 <section id="top-bar">
                     <label>1 / 10</label>
-                    <button className="btn btn-primary btn-small" id="btn-next" onClick={nextQuestion}>
+                    <button className="btn btn-primary btn-small" id="btn-next"
+                        onClick={nextQuestion} disabled={answer == null}>
                     <svg className="icon">
                         <use xlinkHref="#chevron-right" />
                     </svg>

@@ -43,21 +43,51 @@ const sino_positional = {
     10000: '만'
 }
 
-function get_random_number(type) {
-    const number = Math.floor(Math.random() * 10) + 1
-    let name = null
-    if (type === 'native') {
-        name = native_numbers_units[number]
-    } else if (type === 'sino') {
-        name = sino_numbers[number]
+const select_table = (name) => {
+    if (name === 'native') {
+        return native_numbers_units
+    } else if (name === 'sino') {
+        return sino_numbers
     } else {
-        throw Error('invalid number type ' + type)
+        throw Error('invalid table ' + name)
     }
-    return [number, name]
+}
+
+class Wheel {
+    constructor(table) {
+        this.table = table
+        this.wheel = Object.keys(table).map(k => ({
+            'key': k,
+            'weight': 1
+        }))
+        this.total = this.wheel.reduce((t, item) => t + item.weight, 0)
+    }
+
+    getItem() {
+        const random = Math.random() * this.total
+        const last_index = this.wheel.length - 1
+        let i = 0;
+        let weight = 0;
+        while (i < last_index && weight < random) {
+            i += 1;
+            weight += this.wheel[i].weight;
+        }
+        const key = this.wheel[i].key
+        console.log(`Wheel picked ${key} [${i}], wheel is ${this.wheel.map(x => x.key)}`)
+        const last = this.wheel.pop()
+        if (i < last_index) {
+            this.wheel[i] = last
+        }
+        return [key, this.table[key]]
+    }
 }
 
 export function get_question(type, length=4) {
-    const choices = Array(length).fill().map(() => get_random_number(type))
+
+    const table = select_table(type)
+    const wheel = new Wheel(table)
+
+    const choices = Array(length).fill().map(() => wheel.getItem())
     const correct_one = Math.floor(Math.random() * length)
     return {
         'options': choices.map(x => x[1]),

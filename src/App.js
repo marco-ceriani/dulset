@@ -21,7 +21,7 @@ const OptionsGrid = (props) => {
                     onAnswer(item);
                     event.stopPropagation();
                 } : () => void 0);
-                
+
                 return <button className={[classes.join(' ')]} key={index} onClick={handler} disabled={answer != null}>
                     {item}
                 </button>
@@ -34,14 +34,14 @@ const OptionsGrid = (props) => {
 function App() {
 
     const [quizType, setQuizType] = useState("sino")
-    const [question, setQuestion] = useState({options: []})
-    const [answered, setAnswered] = useState(false)    
+    const [question, setQuestion] = useState({ options: [] })
+    const [answered, setAnswered] = useState(false)
 
     useEffect(() => {
         setQuestion(get_question(quizType))
     }, [quizType, setQuestion])
 
-    const handleQuizChange= (e) => {
+    const handleQuizChange = (e) => {
         setQuizType(e.target.value)
     }
 
@@ -58,16 +58,20 @@ function App() {
                         <option value="sino">Sino Korean</option>
                         <option value="native">Native Korean</option>
                     </select>
+
+                </div>
+            </header>
+            <main className="container">
+                <QuizQuestion quizType={quizType} question={question} onAnswer={() => { setAnswered(true) }} />
+                <div className="container">
                     <button className="btn btn-primary btn-small" id="btn-next"
-                            onClick={nextQuestion} disabled={!answered}>
+                        onClick={nextQuestion} disabled={!answered}>
                         <svg className="icon">
                             <use xlinkHref="#chevron-right" />
                         </svg>
                     </button>
+
                 </div>
-            </header>
-            <main className="container">
-                <QuizQuestion quizType={quizType} question={question} onAnswer={() => {setAnswered(true)}} />
             </main>
         </div>
     );

@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap');
 
 :root {
-    --clr-background: #fcffc1;
+    --clr-background: hsl(63, 80%, 91%);
     --clr-button: #d0d3a2;
-    --clr-primary-light: #9bf4d5;
-    --clr-primary: #1dad9b;
-    --clr-primary-dark: #346357;
-    --clr-accent: #ad1d2f;
+    --clr-primary-light: hsl(170, 80%, 78%);
+    --clr-primary: hsl(170, 71%, 40%);
+    --clr-primary-dark: hsl(170, 31%, 30%);
+    --clr-accent-light:  hsl(353, 80%, 78%);
+    --clr-accent:  hsl(353, 71%, 40%);
+    --clr-accent-dark:  hsl(353, 31%, 30%);
 }
 
 *,
@@ -69,23 +71,24 @@ select {
 
 .btn {
     font-size: 1.25rem;
-    padding-inline: 1em;
-    padding-block: 0.2em;
-    margin-block: 0.2em;
+    padding-inline: .8em;
+    padding-block: .2em;
+    margin-block: 0.25em;
     border: 1px solid;
     border-radius: 0.2em;
     box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .btn-primary {
-    background-color: var(--clr-primary-light);
-    border-color: var(--clr-primary);
-}
-
-.btn-primary:disabled {
     background-color: var(--clr-primary);
     border-color: var(--clr-primary-dark);
-    color: var(--clr-primary-dark);
+    color: white;
+}
+
+.btn:disabled {
+    opacity: .7;
+    pointer-events: none;
 }
 
 .icon {
@@ -114,7 +117,7 @@ header {
 }
 
 #quiz-select {
-    background-color: var(--clr-background);
+    background-color: var(--clr-primary-light);
 }
 
 .question {

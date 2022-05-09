@@ -52,8 +52,6 @@ function App() {
         setAnswer(value);
     }
 
-    console.log(quizType)
-
     return (
         <div className="App">
             <header>
@@ -61,7 +59,6 @@ function App() {
                     <select id="quiz-select" onChange={handleQuizChange}>
                         <option value="sino">Sino Korean</option>
                         <option value="native">Native Korean</option>
-                        <option value="native-tens">Native Tens</option>
                     </select>
                     <button className="btn btn-primary btn-small" id="btn-next"
                             onClick={nextQuestion} disabled={answer == null}>

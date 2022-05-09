@@ -37,32 +37,25 @@ const sino_numbers = {
 }
 
 const sino_positional = {
+    1: '',
     10: '십',
     100: '백',
     1000: '천',
     10000: '만'
 }
 
-const select_table = (name) => {
-    if (name === 'native') {
-        return native_numbers_units
-    } else if (name === 'sino') {
-        return sino_numbers
-    } else if (name === 'native-tens') {
-        return native_numbers_tens
-    } else {
-        throw Error('invalid table ' + name)
-    }
-}
-
 class Wheel {
-    constructor(table) {
+    constructor(table, options={}) {
         this.table = table
         this.wheel = Object.keys(table).map(k => ({
             'key': k,
             'weight': 1
         }))
         this.total = this.wheel.reduce((t, item) => t + item.weight, 0)
+        this.options = {
+            distinct : false,
+            ...options
+        }
     }
 
     getItem() {
@@ -75,21 +68,72 @@ class Wheel {
             weight += this.wheel[i].weight;
         }
         const key = this.wheel[i].key
-        const last = this.wheel.pop()
-        if (i < last_index) {
-            this.wheel[i] = last
+        if (this.options.distinct) {
+            const last = this.wheel.pop()
+            if (i < last_index) {
+                this.wheel[i] = last
+            }
         }
+        
         return [key, this.table[key]]
     }
 }
 
-export function get_question(type, length = 4) {
+const generate_native_number = (length = 1) => {
+    let value = 0;
+    let text = ''
+    if (length > 1) {
+        const [digit, name] = new Wheel(native_numbers_tens).getItem();
+        value += parseInt(digit, 10);
+        text += name;
+    }
+    const [digit, name] = new Wheel(native_numbers_units).getItem();
+    if (digit !== '10') {
+        value += parseInt(digit, 10);
+        text += name;
+    }
+    return {
+        number: value, 
+        text: text
+    }
+}
 
-    const table = select_table(type)
-    const wheel = new Wheel(table)
+const generate_sino_korean_number = (length = 1) => {
+    let value = 0;
+    let text = ''
+    const wheel = new Wheel(sino_numbers);
+    for (let i = 0, v = 1; i < length; i++, v *= 10) {
+        const [digit, name] = wheel.getItem()
+        if (digit === '1') {
+            text = sino_positional[v] + text;
+            value += parseInt(digit) * v;
+        } else if (digit !== '10') {
+            text = name + sino_positional[v] + text;
+            value += parseInt(digit) * v;
+        }
+    }
+    return {
+        number: value, 
+        text: text
+    }
+}
 
-    const choices = Array(length).fill().map(() => wheel.getItem())
-    const correct_one = Math.floor(Math.random() * length)
+export function get_question(type, num_options = 4, length = 2) {
+    let generator = null
+    if (type === 'native') {
+        generator = generate_native_number
+    } else {
+        generator = generate_sino_korean_number
+    }
+
+    const answers = new Map();
+    while (answers.size < num_options) {
+        const answer = generator(length);
+        answers.set(answer.number, answer.text);
+    }
+    const choices = [...answers]
+    const correct_one = Math.floor(Math.random() * num_options)
+
     return {
         'options': choices.map(x => x[1]),
         'text': choices[correct_one][0],

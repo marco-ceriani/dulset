@@ -32,13 +32,12 @@ const sino_numbers = {
     6: '육',    // yuk
     7: '칠',    // chil
     8: '팔',    // pal
-    9: '구',    // gu
-    10: '십'    // sip
+    9: '구'     // gu
 }
 
 const sino_positional = {
     1: '',
-    10: '십',
+    10: '십',   // sip
     100: '백',
     1000: '천',
     10000: '만'

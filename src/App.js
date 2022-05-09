@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
+import QuizQuestion from './components/QuizQuestion';
+
 import { get_question } from './lib/numbers.js'
 
 const OptionsGrid = (props) => {
@@ -33,7 +35,7 @@ function App() {
 
     const [quizType, setQuizType] = useState("sino")
     const [question, setQuestion] = useState({options: []})
-    const [answer, setAnswer] = useState(null)    
+    const [answered, setAnswered] = useState(false)    
 
     useEffect(() => {
         setQuestion(get_question(quizType))
@@ -45,11 +47,7 @@ function App() {
 
     const nextQuestion = () => {
         setQuestion(get_question(quizType))
-        setAnswer(null)
-    }
-
-    const handleAnswer = (value) => {
-        setAnswer(value);
+        setAnswered(false)
     }
 
     return (
@@ -61,7 +59,7 @@ function App() {
                         <option value="native">Native Korean</option>
                     </select>
                     <button className="btn btn-primary btn-small" id="btn-next"
-                            onClick={nextQuestion} disabled={answer == null}>
+                            onClick={nextQuestion} disabled={!answered}>
                         <svg className="icon">
                             <use xlinkHref="#chevron-right" />
                         </svg>
@@ -69,10 +67,7 @@ function App() {
                 </div>
             </header>
             <main className="container">
-                <section className="question">
-                    { question.text }
-                </section>
-                <OptionsGrid options={question.options} correct={question.answer} answer={answer} onAnswer={handleAnswer}/>
+                <QuizQuestion quizType={quizType} question={question} onAnswer={() => {setAnswered(true)}} />
             </main>
         </div>
     );

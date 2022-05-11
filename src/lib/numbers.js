@@ -87,7 +87,7 @@ const generate_native_number = (length = 1) => {
         text += name;
     }
     const [digit, name] = new Wheel(native_numbers_units).getItem();
-    if (digit !== '10') {
+    if (digit !== '10' || length === 1) {
         value += parseInt(digit, 10);
         text += name;
     }
@@ -101,8 +101,10 @@ const generate_sino_korean_number = (length = 1) => {
     let value = 0;
     let text = ''
     const wheel = new Wheel(sino_numbers);
+    console.group('generate sino-korean number')
     for (let i = 0, v = 1; i < length; i++, v *= 10) {
         const [digit, name] = wheel.getItem()
+        console.log(`digit ${digit} : ${name}`)
         if (digit === '1') {
             text = sino_positional[v] + text;
             value += parseInt(digit) * v;
@@ -111,6 +113,7 @@ const generate_sino_korean_number = (length = 1) => {
             value += parseInt(digit) * v;
         }
     }
+    console.groupEnd()
     return {
         number: value, 
         text: text

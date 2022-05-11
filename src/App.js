@@ -57,7 +57,7 @@ function App() {
                     <svg className="icon" onClick={resetQuizConfig}>
                         <use href="#home" />
                     </svg>
-                    <h2 className="pageTitle">{quizConfig?.type}</h2>
+                    <h2 className="pageTitle">{quizConfig?.type || '둘셋'}</h2>
                 </div>
             </header>
             <main>

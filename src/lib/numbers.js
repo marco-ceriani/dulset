@@ -121,6 +121,10 @@ const generate_sino_korean_number = (length = 1) => {
 }
 
 export function get_question(type, num_options = 4, length = 2) {
+    if (!type) {
+        console.log('Invalid type')
+        return {}
+    }
     let generator = null
     if (type === 'native') {
         generator = generate_native_number

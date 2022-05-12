@@ -1,67 +1,50 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import QuizQuestion from './components/QuizQuestion';
 import QuizSelect from './components/QuizSelect';
 
-import { get_question } from './lib/numbers.js'
+import InfiniteQuiz from './components/InfiniteQuiz'
+
+const Header = (props) => {
+    const { title, onHomeClick } = props;
+    return <header>
+        <div className="container top-bar">
+            <svg className="icon" onClick={onHomeClick}>
+                <use href="#home" />
+            </svg>
+            <h2 className="pageTitle">{title}</h2>
+        </div>
+    </header>
+}
 
 function App() {
 
-    const [quizConfig, setQuizConfig] = useState({})
-    const [question, setQuestion] = useState({ options: [] })
-    const [answered, setAnswered] = useState(false)
-
-    useEffect(() => {
-        setQuestion(get_question(quizConfig?.type, 4, quizConfig?.level))
-    }, [quizConfig, setQuestion])
-
-    const nextQuestion = () => {
-        setQuestion(get_question(quizConfig?.type, 4, quizConfig?.level))
-        setAnswered(false)
-    }
+    const [quizConfig, setQuizConfig] = useState(null)
 
     const resetQuizConfig = () => {
-        setQuizConfig({})
+        setQuizConfig(null)
     }
 
     const selectQuizConfig = (type, difficulty) => {
         const pieces = type.split('-');
-        setQuizConfig({
-            type: pieces[0],
-            level: difficulty
-        })
-    }
-
-    let mainBody = null;
-    if (quizConfig?.type) {
-        mainBody = <>
-            <QuizQuestion question={question} onAnswer={() => { setAnswered(true) }} />
-            <div className="container">
-                <button className="btn btn-primary btn-small" id="btn-next"
-                    onClick={nextQuestion} disabled={!answered}>
-                    <svg className="icon">
-                        <use xlinkHref="#chevron-right" />
-                    </svg>
-                </button>
-            </div>
-        </>
-    } else {
-        mainBody = <QuizSelect onSelect={selectQuizConfig} />
+        const realType = pieces[0];
+        const config = {
+            type: realType,
+            level: difficulty,
+            title: realType === 'sino' ? 'Sino-Korean' : 'Native'
+        }
+        setQuizConfig(config)
     }
 
     return (
         <div className="App">
-            <header>
-                <div className="container top-bar">
-                    <svg className="icon" onClick={resetQuizConfig}>
-                        <use href="#home" />
-                    </svg>
-                    <h2 className="pageTitle">{quizConfig?.type || '둘셋'}</h2>
-                </div>
-            </header>
+            <Header title={quizConfig?.title || '둘셋'} onHomeClick={resetQuizConfig} />
             <main>
-                {mainBody}
+                {
+                    quizConfig
+                        ? <InfiniteQuiz config={quizConfig} />
+                        : <QuizSelect onSelect={selectQuizConfig} />
+                }
             </main>
         </div>
     );

@@ -20,8 +20,8 @@ const QuizSelect = (props) => {
     }
 
     return <div>
-        <div>
-            <label>Difficulty</label>
+        <div className="slider-container">
+            <h3>Difficulty</h3>
             <input type="range" min="1" max="3"
                 aria-label="select difficulty"
                 value={difficulty}

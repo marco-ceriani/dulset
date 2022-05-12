@@ -23,8 +23,12 @@ button {
     outline: none;
 }
 
+h1, h2, h3 {
+    margin: 0;
+}
+
 ul {
-    padding: 0
+    padding: 0;
 }
 
 /* Typography */
@@ -45,6 +49,10 @@ h1 {
     margin-block: 0.3em;
 }
 
+h3 {
+    margin-top: .5rem;
+}
+
 /* Components */
 
 .App {
@@ -52,25 +60,6 @@ h1 {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-select {
-    appearance: none;
-    min-width: 15ch;
-    max-width: 20ch;
-
-    padding-block: 0.25em;
-    padding-inline: 0.5em;
-    margin: 0;
-
-    border: 1px solid var(--clr-primary);
-    border-radius: 0.25em;
-    background-color: white;
-
-    font-family: inherit;
-    font-size: inherit;
-    cursor: pointer;
-    line-height: inherit;
 }
 
 .btn {
@@ -106,6 +95,10 @@ select {
     margin-inline: auto;
 }
 
+.slider-container > input {
+    width: 100%;
+}
+
 /* Sections */
 
 header {
@@ -127,15 +120,10 @@ main {
     flex-grow: 1;
     padding-block: 1em;
     padding-inline: 10vw;
-    overflow-y: scroll;
 }
 
 .pageTitle {
     margin: 0;
-}
-
-#quiz-select {
-    background-color: var(--clr-primary-light);
 }
 
 .question {

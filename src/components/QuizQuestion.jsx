@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 const computeClasses = (option, answer, correctAnswer) => {
-    if (answer && option === correctAnswer) {
-        return "option-btn option-right";
-    }
+    const classes = ["option-btn"]
     if (option === answer) {
-        return "option-btn option-wrong";
+        classes.push("option-selected")
     }
-    return "option-btn"
+    if (answer && option === correctAnswer) {
+        classes.push("option-right")
+    }
+    if (option === answer && answer !== correctAnswer) {
+        classes.push("option-wrong")
+    }
+    return classes.join(" ")
 }
 
 const QuizQuestion = (props) => {

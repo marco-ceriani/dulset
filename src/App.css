@@ -2,19 +2,17 @@
 
 :root {
     --clr-background: hsl(63, 80%, 91%);
-    --clr-button: #d0d3a2;
     --clr-primary-light: hsl(170, 80%, 78%);
-    --clr-primary: hsl(170, 71%, 40%);
-    --clr-primary-dark: hsl(170, 31%, 30%);
-    --clr-accent-light:  hsl(353, 80%, 78%);
-    --clr-accent:  hsl(353, 71%, 40%);
-    --clr-accent-dark:  hsl(353, 31%, 30%);
+    --clr-primary: hsl(165, 56%, 69%);
+    --clr-primary-dark: hsl(165, 56%, 30%);
+    --clr-error: hsl(359, 100%, 70%);
+    --font-korean: 'Noto Serif KR';
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 button {
@@ -23,7 +21,9 @@ button {
     outline: none;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     margin: 0;
 }
 
@@ -90,12 +90,12 @@ h3 {
     fill: currentColor;
 }
 
-.container{
+.container {
     width: min(80vw, 800px);
     margin-inline: auto;
 }
 
-.slider-container > input {
+.slider-container>input {
     width: 100%;
 }
 
@@ -130,7 +130,7 @@ main {
     font-size: 2rem;
     text-align: center;
     background-color: white;
-    border: 1px solid var(--clr-primary);
+    border: 2px solid var(--clr-primary);
     border-radius: 0.25em;
 }
 
@@ -143,7 +143,7 @@ main {
 
 .option-btn {
     width: 100%;
-    font-family: 'Noto Serif KR', serif;
+    font-family: var(--font-korean), serif;
     font-size: 2.2rem;
     padding-block: 0.15em;
     background-color: var(--clr-background);
@@ -155,16 +155,22 @@ main {
 
 .option-btn:focus {
     border: 1px solid #333;
+    transform: scale(1.05);
 }
 
 .option-btn:active {
     transform: scale(1.05);
 }
 
-.option-wrong {
-    background-color: var(--clr-accent);
-    color: white;
+.option-selected,
+.option-btn:hover {
+    transform: scale(1.05);
 }
+
+.option-wrong {
+    background-color: var(--clr-error);
+}
+
 .option-right {
     background-color: var(--clr-primary);
     color: black;

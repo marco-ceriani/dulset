@@ -2,8 +2,8 @@ import './App.css';
 import React, { useState } from 'react';
 
 import QuizSelect from './components/QuizSelect';
-
 import InfiniteQuiz from './components/InfiniteQuiz'
+import { getQuizTitle } from './lib/numbers'
 
 const Header = (props) => {
     const { title, onHomeClick } = props;
@@ -24,12 +24,10 @@ function App() {
     }
 
     const selectQuizConfig = (type, difficulty) => {
-        const pieces = type.split('-');
-        const realType = pieces[0];
         const config = {
-            type: realType,
+            type: type,
             level: difficulty,
-            title: realType === 'sino' ? 'Sino-Korean' : 'Native'
+            title: getQuizTitle(type)
         }
         setQuizConfig(config)
     }

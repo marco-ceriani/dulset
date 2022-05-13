@@ -126,7 +126,7 @@ export function get_question(type, num_options = 4, length = 2) {
         return {}
     }
     let generator = null
-    if (type === 'native') {
+    if (type === 'native-to' || type === 'native-from') {
         generator = generate_native_number
     } else {
         generator = generate_sino_korean_number
@@ -135,14 +135,25 @@ export function get_question(type, num_options = 4, length = 2) {
     const answers = new Map();
     while (answers.size < num_options) {
         const answer = generator(length);
-        answers.set(answer.number, answer.text);
+        if (type.endsWith('-to')) {
+            answers.set(answer.number, answer.text);
+        } else {
+            answers.set(answer.text, answer.number);
+        }
     }
     const choices = [...answers]
-    const correct_one = Math.floor(Math.random() * num_options)
+    const correctChoice = choices[ choices.length * Math.random() << 0 ];
+    const correct_one = Math.floor(Math.random() * choices.length)
+    console.log(choices)
+    console.log(correctChoice)
 
     return {
         'options': choices.map(x => x[1]),
         'text': choices[correct_one][0],
         'answer': choices[correct_one][1]
     }
+}
+
+export const getQuizTitle = (type) => {
+    return type.startsWith('sino-') ? 'Sino-Korean' : 'Native'
 }

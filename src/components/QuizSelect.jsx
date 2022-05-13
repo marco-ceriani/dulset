@@ -19,7 +19,7 @@ const QuizSelect = (props) => {
         </li>
     }
 
-    return <div>
+    return <div className="quiz-selection">
         <div className="slider-container">
             <h3>Difficulty</h3>
             <input type="range" min="1" max="3"

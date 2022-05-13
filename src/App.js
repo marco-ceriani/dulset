@@ -8,12 +8,10 @@ import InfiniteQuiz from './components/InfiniteQuiz'
 const Header = (props) => {
     const { title, onHomeClick } = props;
     return <header>
-        <div className="container top-bar">
             <svg className="icon" onClick={onHomeClick}>
                 <use href="#home" />
             </svg>
-            <h2 className="pageTitle">{title}</h2>
-        </div>
+            <h2>{title}</h2>
     </header>
 }
 

@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/dulset/static/css/main.db67324f.css",
-    "main.js": "/dulset/static/js/main.33ebcdc8.js",
+    "main.css": "/dulset/static/css/main.b4bf3c72.css",
+    "main.js": "/dulset/static/js/main.e5369324.js",
     "static/js/787.b66d5771.chunk.js": "/dulset/static/js/787.b66d5771.chunk.js",
     "index.html": "/dulset/index.html",
-    "main.db67324f.css.map": "/dulset/static/css/main.db67324f.css.map",
-    "main.33ebcdc8.js.map": "/dulset/static/js/main.33ebcdc8.js.map",
+    "main.b4bf3c72.css.map": "/dulset/static/css/main.b4bf3c72.css.map",
+    "main.e5369324.js.map": "/dulset/static/js/main.e5369324.js.map",
     "787.b66d5771.chunk.js.map": "/dulset/static/js/787.b66d5771.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.db67324f.css",
-    "static/js/main.33ebcdc8.js"
+    "static/css/main.b4bf3c72.css",
+    "static/js/main.e5369324.js"
   ]
 }

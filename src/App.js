@@ -8,10 +8,10 @@ import { getQuizTitle } from './lib/numbers'
 const Header = (props) => {
     const { title, onHomeClick } = props;
     return <header>
-            <svg className="icon" onClick={onHomeClick}>
+            <svg className="icon .icon-btn" onClick={onHomeClick}>
                 <use href="#home" />
             </svg>
-            <h2>{title}</h2>
+            <h1>{title}</h1>
     </header>
 }
 

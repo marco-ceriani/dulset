@@ -15,7 +15,7 @@ const QuizSelect = (props) => {
     const QuizTypeButton = (props) => {
         const { type, children } = props;
         return <li onClick={() => openQuiz(type)}>
-            <button>{children}</button>
+            <button className="quiz-select-btn">{children}</button>
         </li>
     }
 
@@ -28,14 +28,15 @@ const QuizSelect = (props) => {
                 onChange={(e) => setDifficulty(parseInt(e.target.value))} />
         </div>
         <section className="options-group">
-            <h3>Quiz Type</h3>
+            <h3>Native Numbers</h3>
             <ul>
-                <QuizTypeButton type="native-to"># ➔ native</QuizTypeButton>
-                <QuizTypeButton type="sino-to"># ➔ sino-korean</QuizTypeButton>
-                {/*
-                <QuizTypeButton type="native-from">native ➔ #</QuizTypeButton>
-                <QuizTypeButton type="sino-from">sino-korean ➔ #</QuizTypeButton>
-                */}
+                <QuizTypeButton type="native-to">1 ➔ 하나</QuizTypeButton>
+                <QuizTypeButton type="sino-to">1 ➔ 일</QuizTypeButton>
+            </ul>
+            <h3>Sino-Korean Numbers</h3>
+            <ul>
+                <QuizTypeButton type="native-from">하나 ➔ 1</QuizTypeButton>
+                <QuizTypeButton type="sino-from">일 ➔ 1</QuizTypeButton>
             </ul>
         </section>
     </div>

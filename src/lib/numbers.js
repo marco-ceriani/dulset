@@ -122,7 +122,7 @@ const generate_sino_korean_number = (length = 1) => {
 
 export function get_question(type, num_options = 4, length = 2) {
     if (!type) {
-        console.log('Invalid type')
+        console.error('Invalid type')
         return {}
     }
     let generator = null
@@ -143,14 +143,11 @@ export function get_question(type, num_options = 4, length = 2) {
     }
     const choices = [...answers]
     const correctChoice = choices[ choices.length * Math.random() << 0 ];
-    const correct_one = Math.floor(Math.random() * choices.length)
-    console.log(choices)
-    console.log(correctChoice)
 
     return {
         'options': choices.map(x => x[1]),
-        'text': choices[correct_one][0],
-        'answer': choices[correct_one][1]
+        'text': correctChoice[0],
+        'answer': correctChoice[1]
     }
 }
 

@@ -18,26 +18,21 @@ const InfiniteQuiz = (props) => {
     const [question, setQuestion] = useState(generateQuiz(config))
     const [answered, setAnswered] = useState(false)
 
-    console.log('render')
-    console.log(config)
-
     const nextQuestion = () => {
         setQuestion(generateQuiz(config))
         setAnswered(false)
     }
 
-    return <>
+    return <div className="quiz">
         <QuizQuestion question={question}
             onAnswer={() => { setAnswered(true) }} />
-        <div className="container">
-            <button className="btn btn-primary btn-small"
-                onClick={nextQuestion} disabled={!answered}>
-                <svg className="icon">
-                    <use xlinkHref="#chevron-right" />
-                </svg>
-            </button>
-        </div>
-    </>
+        <button id="button-next" className="btn btn-primary btn-wide"
+            onClick={nextQuestion} disabled={!answered}>
+            <svg className="icon">
+                <use xlinkHref="#chevron-right" />
+            </svg>
+        </button>
+    </div>
 
 }
 

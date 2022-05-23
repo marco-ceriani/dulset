@@ -1,14 +1,15 @@
 
 :root {
-    --clr-background: rgb(249, 250, 214);
-    --clr-primary-light: hsl(170, 80%, 78%);
     --clr-primary: hsl(165, 56%, 69%);
-    --clr-primary-dark: hsl(165, 56%, 30%);
-    --clr-primary-contrast: hsl(165, 56%, 100%);
+    --clr-primary-dark: hsl(165, 56%, 25%);
+    --clr-background: hsl(62, 5%, 98%);
+    --clr-primary-contrast: hsl(62, 5%, 98%);
     --clr-error: hsl(359, 100%, 70%);
+    --clr-button: hsl(61.7, 78.3%, 93%);
     --clr-shadow: hsl(0, 0%, 40%);
     --font-korean: 'Noto Serif KR';
     --size-max-width: 900px;
+    accent-color: var(--clr-primary);
 }
 
 /* Reset */
@@ -62,7 +63,7 @@ h3 {
 .btn-primary {
     background-color: var(--clr-primary);
     border-color: var(--clr-primary-dark);
-    color: white;
+    color: var(--clr-primary-contrast);
 }
 
 .btn:disabled {
@@ -102,11 +103,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
     /* notebook background */ 
-    --clr-paper: white;
-    background-color: var(--clr-paper);
-    opacity: 1;
-    background-size: 36px 36px;
-    background-image:  repeating-linear-gradient(0deg, var(--clr-primary-light), var(--clr-primary-light) 1.5px, var(--clr-paper) 1.5px, var(--clr-paper));
+    background-color: hsl(165, 0%, 90%);
 }
 
 .App {
@@ -159,7 +156,7 @@ main {
 .question {
     font-size: 2rem;
     text-align: center;
-    background-color: white;
+    background-color: var(--clr-background);
     border: 2px solid var(--clr-primary);
     border-radius: 0.25em;
 }
@@ -176,7 +173,7 @@ main {
     font-family: var(--font-korean), serif;
     font-size: 2.2rem;
     padding-block: 0.15em;
-    background-color: var(--clr-background);
+    background-color: var(--clr-button);
     border: 1px solid #bbb;
     border-radius: 0.5rem;
     box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
@@ -227,7 +224,7 @@ main {
     width: 100%;
     padding-block: 1em;
     padding-inline: 0.7em;
-    background-color: var(--clr-background);
+    background-color: var(--clr-button);
     border: 1px solid #bbb;
     border-radius: 0.5rem;
     box-shadow: 1px 1px 0.25rem var(--clr-shadow);

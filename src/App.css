@@ -7,6 +7,7 @@
     --clr-error: hsl(359, 100%, 70%);
     --clr-button: hsl(61.7, 78.3%, 93%);
     --clr-shadow: hsl(0, 0%, 40%);
+    --clr-backdrop: hsl(165, 0%, 90%);
     --font-korean: 'Noto Serif KR';
     --size-max-width: 900px;
     accent-color: var(--clr-primary);
@@ -20,10 +21,19 @@
     box-sizing: border-box;
 }
 
+body, input, textarea, button {
+    font: inherit;
+}
+
 button {
     margin: 0;
     border: none;
     outline: none;
+    
+}
+
+button:enabled {
+    cursor: pointer;
 }
 
 h1,
@@ -32,9 +42,12 @@ h3 {
     margin: 0;
 }
 
-
 ul {
     padding: 0;
+}
+
+li {
+    list-style: none;
 }
 
 /* Typography */
@@ -44,7 +57,7 @@ h1 {
 }
 
 h3 {
-    margin-top: .5rem;
+    margin-block-start: .5rem;
 }
 
 /* Components and utilities */
@@ -57,7 +70,6 @@ h3 {
     border: 1px solid;
     border-radius: 0.2em;
     box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
-    cursor: pointer;
 }
 
 .btn-primary {
@@ -82,13 +94,9 @@ h3 {
     cursor: pointer;
 }
 
-.container {
-    width: min(80vw, 800px);
-    margin-inline: auto;
-}
-
-.slider-container > input {
+input[type="range"] {
     width: 100%;
+    font-size: 0px;
 }
 
 /* Sections */
@@ -102,8 +110,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    /* notebook background */ 
-    background-color: hsl(165, 0%, 90%);
+    background-color: var(--clr-backdrop);
 }
 
 .App {
@@ -119,6 +126,7 @@ body {
 
 header {
     position: fixed;
+    top: 0;
     width: min(100%, var(--size-max-width));
     background-color: var(--clr-primary-dark);
     color: var(--clr-primary-contrast);
@@ -130,7 +138,6 @@ header {
     padding-inline: clamp(1.5rem, 8vw, 6rem);
     line-height: 1.5;
 }
-
 
 header ~ * {
     margin-top: 2.25em;
@@ -200,27 +207,22 @@ main {
 
 .option-right {
     background-color: var(--clr-primary);
-    color: black;
 }
 
-.options-group {
-    max-width: 40rem;
+#button-next {
+    display: block;
     margin-inline: auto;
 }
 
-.options-group ul {
+.options-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     row-gap: 1em;
     column-gap: 2em;
+    margin-block: 1em;
 }
 
-.options-group li {
-    list-style: none;
-}
-
-.options-group li button {
-    font-size: 1.5rem;
+.options-group button {
     width: 100%;
     padding-block: 1em;
     padding-inline: 0.7em;
@@ -228,10 +230,5 @@ main {
     border: 1px solid #bbb;
     border-radius: 0.5rem;
     box-shadow: 1px 1px 0.25rem var(--clr-shadow);
-    cursor: pointer;
 }
 
-#button-next {
-    display: block;
-    margin-inline: auto;
-}

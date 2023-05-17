@@ -125,7 +125,7 @@ body {
 }
 
 header {
-    position: fixed;
+    position: sticky;
     top: 0;
     width: min(100%, var(--size-max-width));
     background-color: var(--clr-primary-dark);
@@ -137,10 +137,6 @@ header {
     padding-block: 0.1rem;
     padding-inline: clamp(1.5rem, 8vw, 6rem);
     line-height: 1.5;
-}
-
-header ~ * {
-    margin-top: 2.25em;
 }
 
 main {

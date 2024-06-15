@@ -32,7 +32,7 @@ function App() {
         setQuizConfig(config)
     }
 
-    return (
+  return (
         <div className="App">
             <Header title={quizConfig?.title || '둘셋'} onHomeClick={resetQuizConfig} />
             <main>
@@ -42,7 +42,7 @@ function App() {
                         : <QuizSelect onSelect={selectQuizConfig} />
                 }
             </main>
-        </div>
+      </div>
     );
 }
 

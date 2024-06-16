@@ -1,3 +1,5 @@
+import { Wheel } from './random'
+
 const native_numbers_units = {
     1: '하나',  // hana
     2: '둘',    // dul
@@ -43,56 +45,21 @@ const sino_positional = {
     10000: '만'
 }
 
-class Wheel {
-    constructor(table, options={}) {
-        this.table = table
-        this.wheel = Object.keys(table).map(k => ({
-            'key': k,
-            'weight': 1
-        }))
-        this.total = this.wheel.reduce((t, item) => t + item.weight, 0)
-        this.options = {
-            distinct : false,
-            ...options
-        }
-    }
-
-    getItem() {
-        const random = Math.random() * this.total
-        const last_index = this.wheel.length - 1
-        let i = 0;
-        let weight = 0;
-        while (i < last_index && weight < random) {
-            i += 1;
-            weight += this.wheel[i].weight;
-        }
-        const key = this.wheel[i].key
-        if (this.options.distinct) {
-            const last = this.wheel.pop()
-            if (i < last_index) {
-                this.wheel[i] = last
-            }
-        }
-        
-        return [key, this.table[key]]
-    }
-}
-
 const generate_native_number = (length = 1) => {
-    let value = 0;
+    let value = 0
     let text = ''
     if (length > 1) {
-        const [digit, name] = new Wheel(native_numbers_tens).getItem();
-        value += parseInt(digit, 10);
-        text += name;
+        const [digit, name] = new Wheel(Object.entries(native_numbers_tens)).getItem()
+        value += parseInt(digit, 10)
+        text += name
     }
-    const [digit, name] = new Wheel(native_numbers_units).getItem();
+    const [digit, name] = new Wheel(Object.entries(native_numbers_units)).getItem()
     if (digit !== '10' || length === 1) {
-        value += parseInt(digit, 10);
-        text += name;
+        value += parseInt(digit, 10)
+        text += name
     }
     return {
-        number: value, 
+        number: value,
         text: text
     }
 }
@@ -100,27 +67,27 @@ const generate_native_number = (length = 1) => {
 const generate_sino_korean_number = (length = 1) => {
     let value = 0;
     let text = ''
-    const wheel = new Wheel(sino_numbers);
+    const wheel = new Wheel(Object.entries(sino_numbers));
     console.group('generate sino-korean number')
     for (let i = 0, v = 1; i < length; i++, v *= 10) {
         const [digit, name] = wheel.getItem()
-        console.log(`digit ${digit} : ${name}`)
+        console.debug(`digit ${digit} : ${name}`)
         if (digit === '1') {
-            text = sino_positional[v] + text;
+            text = (<any>sino_positional)[v.toString()] + text;
             value += parseInt(digit) * v;
         } else if (digit !== '10') {
-            text = name + sino_positional[v] + text;
+            text = name + (<any>sino_positional)[v] + text;
             value += parseInt(digit) * v;
         }
     }
     console.groupEnd()
     return {
-        number: value, 
+        number: value,
         text: text
     }
 }
 
-export function get_question(type, num_options = 4, length = 2) {
+export function get_question(type: string, num_options = 4, length = 2) {
     if (!type) {
         console.error('Invalid type')
         return {}
@@ -142,7 +109,7 @@ export function get_question(type, num_options = 4, length = 2) {
         }
     }
     const choices = [...answers]
-    const correctChoice = choices[ choices.length * Math.random() << 0 ];
+    const correctChoice = choices[choices.length * Math.random() << 0];
 
     return {
         'options': choices.map(x => x[1]),
@@ -151,6 +118,6 @@ export function get_question(type, num_options = 4, length = 2) {
     }
 }
 
-export const getQuizTitle = (type) => {
+export const getQuizTitle = (type: string) => {
     return type.startsWith('sino-') ? 'Sino-Korean' : 'Native'
 }

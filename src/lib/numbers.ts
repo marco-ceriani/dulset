@@ -1,4 +1,4 @@
-import { Wheel } from './random'
+import { Wheel, random_item, shuffle } from './random'
 
 const native_numbers_units = {
     1: '하나',  // hana
@@ -120,4 +120,43 @@ export function get_question(type: string, num_options = 4, length = 2) {
 
 export const getQuizTitle = (type: string) => {
     return type.startsWith('sino-') ? 'Sino-Korean' : 'Native'
+}
+
+export type Quiz = {
+    question: string,
+    answer: string
+} & (
+        { type: 'multi-choice', options: string[] } |
+        { type: 'input' }
+    )
+
+
+function guess_value(number: number, text: string) {
+    return {question: text, answer: number.toString()}
+}
+
+function guess_name(number: number, text: string) {
+    return {question: number.toString(), answer: text}
+}
+
+export function new_question(num_digits = 4): Quiz {
+
+    const generator = random_item([generate_sino_korean_number, generate_native_number])
+    const direction = random_item([guess_value, guess_name])
+
+    const{number, text} = generator(num_digits)
+    const {question, answer} = direction(number, text)
+
+    const num_options = 4;
+    const options = shuffle(Array.from({length: num_options - 1}, (_) => {
+        const {number,text} = generator(num_digits); 
+        return direction(number, text).answer;}
+    ).concat([answer]))
+
+    return {
+        question,
+        answer,
+        type: 'multi-choice',
+        options
+    }
 }

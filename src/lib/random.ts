@@ -10,12 +10,12 @@ export class Wheel<T> {
     total: number
     options: { distinct: boolean }
 
-    constructor(values: T[], options={}) {
+    constructor(values: T[], options = {}) {
         this.values = values
-        this.wheel = values.map((_, i) => ({index: i, weight: 1}))
+        this.wheel = values.map((_, i) => ({ index: i, weight: 1 }))
         this.total = this.wheel.reduce((t, item) => t + item.weight, 0)
         this.options = {
-            distinct : false,
+            distinct: false,
             ...options
         }
     }
@@ -48,3 +48,15 @@ export class Wheel<T> {
     }
 }
 
+export function random_item<T>(items: T[]) {
+    return items[Math.floor(Math.random() * items.length)]
+}
+
+export function shuffle<T>(items: T[]) {
+    const array = [...items]
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};

@@ -1,11 +1,9 @@
 import './App.css';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import QuizSelect from './components/QuizSelect';
-import InfiniteQuiz from './components/InfiniteQuiz'
-import { getQuizTitle } from './lib/numbers'
+import QuizSession from './components/QuizSession'
 
-const Header = (props) => {
+const Header = (props: {title: string, onHomeClick: () => void}) => {
     const { title, onHomeClick } = props;
     return <header>
             <svg className="icon .icon-btn" onClick={onHomeClick}>
@@ -17,30 +15,25 @@ const Header = (props) => {
 
 function App() {
 
-    const [quizConfig, setQuizConfig] = useState(null)
+    const [config, setConfig] = useState({
+        //sino_korean: true,
+        //native_korean: true,
+        num_questions: 10
+    })
 
     const resetQuizConfig = () => {
-        setQuizConfig(null)
-    }
-
-    const selectQuizConfig = (type, difficulty) => {
-        const config = {
-            type: type,
-            level: difficulty,
-            title: getQuizTitle(type)
-        }
-        setQuizConfig(config)
+        setConfig({
+            //sino_korean: true,
+            //native_korean: true,
+            num_questions: 10
+        })
     }
 
   return (
         <div className="App">
-            <Header title={quizConfig?.title || '둘셋'} onHomeClick={resetQuizConfig} />
+            <Header title={'둘셋'} onHomeClick={resetQuizConfig} />
             <main>
-                {
-                    quizConfig
-                        ? <InfiniteQuiz config={quizConfig} />
-                        : <QuizSelect onSelect={selectQuizConfig} />
-                }
+                <QuizSession num_questions={config.num_questions}/>
             </main>
       </div>
     );

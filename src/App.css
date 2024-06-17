@@ -165,16 +165,6 @@ main {
     width: max(220px, 80%);
 }
 
-.quiz-selection {
-    text-align: center;
-    max-width: 32rem;
-    margin-inline: auto;
-}
-
-.quiz-select-btn {
-    font-family: var(--font-korean);
-}
-
 .config-section {
     font-size: 1.5rem;
     display: flex;
@@ -234,17 +224,8 @@ main {
     transform: scale(1.05);
 }
 
-.option-selected,
 .option-btn:hover {
     transform: scale(1.05);
-}
-
-.option-wrong {
-    background-color: var(--clr-error);
-}
-
-.option-right {
-    background-color: var(--clr-primary);
 }
 
 #button-next {

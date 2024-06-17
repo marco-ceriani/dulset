@@ -3,6 +3,8 @@ import { new_question, Quiz } from '../lib/numbers'
 
 import InputMultipleChoices from './InputMultipleChoices'
 import QuestionResult from './QuestionResult'
+import type { QuizResult } from './types'
+import type { QuizConfig } from '../lib/numbers'
 
 type AnswerHandler = (user_answer: string) => void
 
@@ -21,27 +23,33 @@ function select_input_form(quiz: Quiz, onAnswer: AnswerHandler) {
     }
 }
 
-const QuizSession = ({num_questions = 10}) => {
+const QuizSession = (props: { config: QuizConfig, onComplete: (res: QuizResult) => void}) => {
+    const { config, onComplete } = props
 
-    const [question, setQuestion] = useState(new_question())
+    const [question, setQuestion] = useState(new_question(config))
     const [progress, setProgress] = useState<Progress>({ correct: 0, total: 0, answer: undefined })
 
     function onAnswer(answer: string) {
-        if (answer === question.answer) {
-            setProgress(current => ({...current, correct: current.correct + 1, total: current.total + 1, answer }))
-        } else {
-            setProgress(current => ({...current, total: current.total + 1, answer }))
-        }
-    }
+        const new_total = progress.total + 1
+        const num_correct = progress.correct + (answer === question.answer ? 1 : 0)
 
+        console.debug(num_correct)
+        console.debug(config.num_questions)
+        setProgress({...progress, answer, total: new_total, correct: num_correct})
+    }
+    
     function onConfirmAnswer() {
-        setQuestion(new_question())
-        setProgress(current => ({...current, answer: undefined}))
+        if (progress.total >= config.num_questions) {
+            onComplete({num_correct: progress.correct})
+        } else {
+            setQuestion(new_question(config))
+            setProgress(current => ({ ...current, answer: undefined }))
+        }
     }
 
     return <>
         <div id="quiz-progress">
-            <progress max={num_questions} value={progress.total} />
+            <progress max={config.num_questions} value={progress.total} />
             <span>{progress.correct} / {progress.total}</span>
         </div>
         <section className="question">

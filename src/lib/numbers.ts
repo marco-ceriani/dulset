@@ -68,7 +68,6 @@ const generate_sino_korean_number = (length = 1) => {
     let value = 0;
     let text = ''
     const wheel = new Wheel(Object.entries(sino_numbers));
-    console.group('generate sino-korean number')
     for (let i = 0, v = 1; i < length; i++, v *= 10) {
         const [digit, name] = wheel.getItem()
         console.debug(`digit ${digit} : ${name}`)
@@ -80,7 +79,6 @@ const generate_sino_korean_number = (length = 1) => {
             value += parseInt(digit) * v;
         }
     }
-    console.groupEnd()
     return {
         number: value,
         text: text
@@ -139,9 +137,25 @@ function guess_name(number: number, text: string) {
     return {question: number.toString(), answer: text}
 }
 
-export function new_question(num_digits = 4): Quiz {
+export type QuizConfig = {
+    sino_korean: boolean,
+    native: boolean,
+    num_questions: number
+}
 
-    const generator = random_item([generate_sino_korean_number, generate_native_number])
+export function new_question(config: QuizConfig, num_digits = 4): Quiz {
+    const number_generators = []
+    if (config.native) {
+        number_generators.push(generate_native_number)
+    }
+    if (config.sino_korean) {
+        number_generators.push(generate_sino_korean_number)
+    }
+    if (number_generators.length === 0) {
+        throw new Error("At least one of sino-korean and native numbers must be enabled")
+    }
+
+    const generator = random_item(number_generators)
     const direction = random_item([guess_value, guess_name])
 
     const{number, text} = generator(num_digits)

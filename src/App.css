@@ -3,7 +3,8 @@
     --clr-primary: hsl(165, 56%, 69%);
     --clr-primary-dark: hsl(165, 56%, 25%);
     --clr-background: hsl(62, 5%, 98%);
-    --clr-primary-contrast: hsl(62, 5%, 98%);
+    --clr-on-primary: hsl(62, 5%, 10%);
+    --clr-on-primary-dark: hsl(62, 5%, 98%);
     --clr-ok: hsl(165, 56%, 69%);
     --clr-error: hsl(359, 100%, 70%);
     --clr-button: hsl(61.7, 78.3%, 93%);
@@ -30,7 +31,6 @@ button {
     margin: 0;
     border: none;
     outline: none;
-    
 }
 
 button:enabled {
@@ -71,12 +71,19 @@ h3 {
     border: 1px solid;
     border-radius: 0.2em;
     box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
+    background-color: var(--clr-button);
+}
+
+.btn:focus-visible {
+    outline: 2px solid;
+    outline-color: var(--clr-primary);
+    outline-offset: .2rem;
 }
 
 .btn-primary {
     background-color: var(--clr-primary);
     border-color: var(--clr-primary-dark);
-    color: var(--clr-primary-contrast);
+    color: var(--clr-on-primary);
 }
 
 .btn:disabled {
@@ -138,7 +145,7 @@ header {
     top: 0;
     width: min(100%, var(--size-max-width));
     background-color: var(--clr-primary-dark);
-    color: var(--clr-primary-contrast);
+    color: var(--clr-on-primary-dark);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -166,6 +173,21 @@ main {
 
 .quiz-select-btn {
     font-family: var(--font-korean);
+}
+
+.config-section {
+    font-size: 1.5rem;
+    display: flex;
+    flex-flow: column;
+    gap: 1.2rem;
+}
+
+.config-section > * {
+    display: flex;
+    justify-content: space-between;
+}
+.config-section .btn {
+    align-self: center;
 }
 
 #quiz-progress {

@@ -71,7 +71,7 @@ const generate_sino_korean_number = (length = 1) => {
     for (let i = 0, v = 1; i < length; i++, v *= 10) {
         const [digit, name] = wheel.getItem()
         console.debug(`digit ${digit} : ${name}`)
-        if (digit === '1') {
+        if (digit === '1' && v != 1) {
             text = (<any>sino_positional)[v.toString()] + text;
             value += parseInt(digit) * v;
         } else if (digit !== '10') {

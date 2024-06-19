@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { Wheel } from './random.ts'
+import { Wheel, WeightedWheel, Weighted } from './random.ts'
 
 describe('infinite wheel', () => {
     const values = ['A', 'D', 'E', 'M', 'R']
@@ -56,5 +56,25 @@ describe('wheel producing distinct values', () => {
         values.forEach(_ => wheel.getItem())
 
         expect(values.length).toEqual(original_length)
+    })
+})
+
+describe('Weighted Wheel', () => {
+
+    const values: Weighted<'D'|'C'>[] = [['D', 1], ['C', 99]]
+
+    test('returns items with proportional frequency', () => {
+        const wheel = new WeightedWheel(values)
+        const counts = new Map(values.map(item => [item[0], 0]))
+        const num_generations = 10_000
+
+        for (let i = 0; i < num_generations; i++) {
+            const value = wheel.getItem()
+            counts.set(value, counts.get(value)! + 1)
+        }
+
+        expect(counts.get('D')! / num_generations).toBeCloseTo(0.01)
+        expect(counts.get('C')! / num_generations).toBeCloseTo(0.99)
+
     })
 })

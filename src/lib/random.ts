@@ -1,19 +1,14 @@
 
-interface WheelItem {
-    index: number
-    weight: number
-}
+export type Weighted<T> = [T, number]
 
-export class Wheel<T> {
-    values: T[]
-    wheel: WheelItem[]
+export class WeightedWheel<T> {
+    wheel: { item: T, weight: number }[]
     total: number
     options: { distinct: boolean }
 
-    constructor(values: T[], options = {}) {
-        this.values = values
-        this.wheel = values.map((_, i) => ({ index: i, weight: 1 }))
-        this.total = this.wheel.reduce((t, item) => t + item.weight, 0)
+    constructor(values: Weighted<T>[], options = {}) {
+        this.wheel = values.map(value => ({ item: value[0], weight: value[1] }))
+        this.total = this.wheel.reduce((total, item) => total + item.weight, 0)
         this.options = {
             distinct: false,
             ...options
@@ -34,8 +29,7 @@ export class Wheel<T> {
         }
         i -= 1
 
-        const index = this.wheel[i].index
-        const item = this.values[index]
+        const item = this.wheel[i].item
 
         if (this.options.distinct) {
             const last = this.wheel.pop()
@@ -45,6 +39,12 @@ export class Wheel<T> {
         }
 
         return item
+    }
+}
+
+export class Wheel<T> extends WeightedWheel<T> {
+    constructor(values: T[], options = {}) {
+        super(values.map(item => [item, 1]), options)
     }
 }
 

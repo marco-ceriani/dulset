@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { new_question, Quiz } from '../lib/numbers'
 
 import InputMultipleChoices from './InputMultipleChoices'
+import InputText from './InputText'
 import QuestionResult from './QuestionResult'
 import type { QuizResult } from './types'
 import type { QuizConfig } from '../lib/numbers'
@@ -19,7 +20,16 @@ function select_input_form(quiz: Quiz, onAnswer: AnswerHandler) {
         case 'multi-choice':
             return <InputMultipleChoices choices={quiz.options} onSelect={onAnswer} />
         case 'input':
-            return <textarea />
+            return <InputText onSubmit={onAnswer}/>
+    }
+}
+
+function create_middle_section(quiz: Quiz) {
+    switch (quiz.type) {
+        case 'input':
+            return <span className="subtitle">Number system: {quiz.system}</span>
+        default:
+            return <></>
     }
 }
 
@@ -55,6 +65,10 @@ const QuizSession = (props: { config: QuizConfig, onComplete: (res: QuizResult) 
         <section className="question">
             {question.question}
         </section>
+
+        <div>
+            {create_middle_section(question)}
+        </div>
 
         {select_input_form(question, onAnswer)}
 

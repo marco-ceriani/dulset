@@ -1,4 +1,4 @@
-import { Wheel, random_item, shuffle } from './random'
+import { Wheel, WeightedWheel, Weighted, random_item, shuffle } from './random'
 
 const native_numbers_units = {
     1: '하나',  // hana
@@ -120,12 +120,15 @@ export const getQuizTitle = (type: string) => {
     return type.startsWith('sino-') ? 'Sino-Korean' : 'Native'
 }
 
+type QuizInput = 'multi-choice' | 'input'
+type NumberSystem = 'Sino-Korean' | 'Native Korean'
+
 export type Quiz = {
     question: string,
     answer: string
 } & (
         { type: 'multi-choice', options: string[] } |
-        { type: 'input' }
+        { type: 'input', system: NumberSystem }
     )
 
 
@@ -143,34 +146,70 @@ export type QuizConfig = {
     num_questions: number
 }
 
+export const DEFAULT_CONFIG = {
+    sino_korean: true,
+    native: true,
+    num_questions: 10
+}
+
+const number_generators = {
+    'Sino-Korean': generate_sino_korean_number,
+    'Native Korean': generate_native_number
+}
+
+export function validate_config(cfg: QuizConfig) {
+    return cfg.native || cfg.sino_korean
+}
+
 export function new_question(config: QuizConfig, num_digits = 4): Quiz {
-    const number_generators = []
+
+    // which kind of number?
+    const number_systems: NumberSystem[] = []
     if (config.native) {
-        number_generators.push(generate_native_number)
+        number_systems.push('Native Korean')
     }
     if (config.sino_korean) {
-        number_generators.push(generate_sino_korean_number)
+        number_systems.push('Sino-Korean')
     }
-    if (number_generators.length === 0) {
+    if (number_systems.length === 0) {
         throw new Error("At least one of sino-korean and native numbers must be enabled")
     }
+    const number_system = random_item(number_systems)
+    const generator_func = number_generators[number_system]!
 
-    const generator = random_item(number_generators)
-    const direction = random_item([guess_value, guess_name])
+    // type of quiz
 
-    const{number, text} = generator(num_digits)
-    const {question, answer} = direction(number, text)
+    const inputType = new WeightedWheel([['multi-choice', 3], ['input', 1]] as Weighted<QuizInput>[]).getItem()
 
-    const num_options = 4;
-    const options = shuffle(Array.from({length: num_options - 1}, (_) => {
-        const {number,text} = generator(num_digits); 
-        return direction(number, text).answer;}
-    ).concat([answer]))
+    if (inputType == 'multi-choice') {
+        const direction = random_item([guess_value, guess_name])
 
-    return {
-        question,
-        answer,
-        type: 'multi-choice',
-        options
+        const{number, text} = generator_func(num_digits)
+        const {question, answer} = direction(number, text)
+    
+        const num_options = 4;
+        const options = shuffle(Array.from({length: num_options - 1}, (_) => {
+            const {number,text} = generator_func(num_digits); 
+            return direction(number, text).answer;}
+        ).concat([answer]))
+    
+        return {
+            type: 'multi-choice',
+            question,
+            answer,
+            options
+        }
+    } else if (inputType == 'input') {
+        const{number, text} = generator_func(num_digits)
+        return {
+            type: 'input',
+            question: number.toString(),
+            answer: text,
+            system: number_system
+        }
+    } else {
+        throw new Error("Invalid quiz type")
     }
+
+
 }

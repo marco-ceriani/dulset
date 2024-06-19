@@ -54,11 +54,11 @@ li {
 /* Typography */
 
 h1 {
-    font-size: 1.5em;
+    font-size: 3rem;
 }
 
-h3 {
-    margin-block-start: .5rem;
+.subtitle {
+    font-size: 1.5rem;
 }
 
 /* Components and utilities */
@@ -94,6 +94,18 @@ h3 {
 .btn-wide {
     padding-inline: clamp(1rem, 8vw, 4.4rem)
 }
+
+.select {
+    appearance: none;
+    min-width: 3ch;
+    font-size: inherit;
+    padding: .25em .5em;
+    cursor: pointer;
+    background-color: var(--clr-background);
+    border: 2px solid var(--clr-primary);
+    border-radius: 0.2em;
+}
+
 
 .icon {
     height: 1.5em;
@@ -166,7 +178,7 @@ main {
 }
 
 .config-section {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     display: flex;
     flex-flow: column;
     gap: 1.2rem;
@@ -249,6 +261,17 @@ main {
     border: 1px solid #bbb;
     border-radius: 0.5rem;
     box-shadow: 1px 1px 0.25rem var(--clr-shadow);
+}
+
+.text-input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+}
+.text-input-area textarea {
+    display: block;
+    width: 100%;
 }
 
 .result-panel {

@@ -85,41 +85,6 @@ const generate_sino_korean_number = (length = 1) => {
     }
 }
 
-export function get_question(type: string, num_options = 4, length = 2) {
-    if (!type) {
-        console.error('Invalid type')
-        return {}
-    }
-    let generator = null
-    if (type === 'native-to' || type === 'native-from') {
-        generator = generate_native_number
-    } else {
-        generator = generate_sino_korean_number
-    }
-
-    const answers = new Map();
-    while (answers.size < num_options) {
-        const answer = generator(length);
-        if (type.endsWith('-to')) {
-            answers.set(answer.number, answer.text);
-        } else {
-            answers.set(answer.text, answer.number);
-        }
-    }
-    const choices = [...answers]
-    const correctChoice = choices[choices.length * Math.random() << 0];
-
-    return {
-        'options': choices.map(x => x[1]),
-        'text': correctChoice[0],
-        'answer': correctChoice[1]
-    }
-}
-
-export const getQuizTitle = (type: string) => {
-    return type.startsWith('sino-') ? 'Sino-Korean' : 'Native'
-}
-
 type QuizInput = 'multi-choice' | 'input'
 type NumberSystem = 'Sino-Korean' | 'Native Korean'
 

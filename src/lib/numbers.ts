@@ -126,7 +126,7 @@ export function validate_config(cfg: QuizConfig) {
     return cfg.native || cfg.sino_korean
 }
 
-export function new_question(config: QuizConfig, num_digits = 4): Quiz {
+export function new_question(config: QuizConfig): Quiz {
 
     // which kind of number?
     const number_systems: NumberSystem[] = []
@@ -141,6 +141,11 @@ export function new_question(config: QuizConfig, num_digits = 4): Quiz {
     }
     const number_system = random_item(number_systems)
     const generator_func = number_generators[number_system]!
+
+    let num_digits = 2;
+    if (number_system == 'Sino-Korean') {
+        num_digits = new WeightedWheel<number>([[1, 1], [2, 5], [3, 5], [4, 2], [5, 1]]).getItem()
+    }
 
     // type of quiz
 

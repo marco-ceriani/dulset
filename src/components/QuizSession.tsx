@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { new_question, Quiz } from '../lib/numbers'
 
 import InputMultipleChoices from './InputMultipleChoices'
 import InputText from './InputText'
+import InputFillBlanks from './InputFillBlanks'
 import QuestionResult from './QuestionResult'
 import type { QuizResult } from './types'
 import type { QuizConfig } from '../lib/numbers'
@@ -15,38 +16,29 @@ type Progress = {
     answer?: string
 }
 
-function select_input_form(quiz: Quiz, onAnswer: AnswerHandler) {
-    switch (quiz.type) {
+function select_input_form(question: Quiz, onAnswer: AnswerHandler) {
+    switch (question.type) {
         case 'multi-choice':
-            return <InputMultipleChoices choices={quiz.options} onSelect={onAnswer} />
+            return <InputMultipleChoices choices={question.options} onSelect={onAnswer} />
         case 'input':
             return <InputText onSubmit={onAnswer}/>
-    }
-}
-
-function create_middle_section(quiz: Quiz) {
-    switch (quiz.type) {
-        case 'input':
-            return <span className="subtitle">Number system: {quiz.system}</span>
-        default:
-            return <></>
+        case 'fill-blanks':
+            return <InputFillBlanks tokens={question.tokens} choices={question.options} onSelect={onAnswer} />
     }
 }
 
 const QuizSession = (props: { config: QuizConfig, onComplete: (res: QuizResult) => void}) => {
     const { config, onComplete } = props
+    console.log(`rendering QuizSession`)
 
     const [question, setQuestion] = useState(new_question(config))
     const [progress, setProgress] = useState<Progress>({ correct: 0, total: 0, answer: undefined })
 
-    function onAnswer(answer: string) {
+    const onAnswer = useCallback((answer: string) => {
         const new_total = progress.total + 1
         const num_correct = progress.correct + (answer === question.answer ? 1 : 0)
-
-        console.debug(num_correct)
-        console.debug(config.num_questions)
         setProgress({...progress, answer, total: new_total, correct: num_correct})
-    }
+    }, [progress, setProgress])
     
     function onConfirmAnswer() {
         if (progress.total >= config.num_questions) {
@@ -65,10 +57,7 @@ const QuizSession = (props: { config: QuizConfig, onComplete: (res: QuizResult) 
         <section className="question">
             {question.question}
         </section>
-
-        <div>
-            {create_middle_section(question)}
-        </div>
+        <span className="subtitle">Number system: {question.system}</span>
 
         {select_input_form(question, onAnswer)}
 

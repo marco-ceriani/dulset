@@ -45,6 +45,15 @@ const sino_positional = {
     10000: '만'
 }
 
+// derived lists
+const all_native_syllables = Object.values(native_numbers_units)
+    .concat(Object.values(native_numbers_tens))
+    .join('').split('')
+
+const all_sino_korean_syllables = Object.values(sino_numbers)
+    .concat(Object.values(sino_positional)
+        .filter(v => v != ''))
+
 const generate_native_number = (length = 1) => {
     let value = 0
     let text = ''
@@ -70,7 +79,6 @@ const generate_sino_korean_number = (length = 1) => {
     const wheel = new Wheel(Object.entries(sino_numbers));
     for (let i = 0, v = 1; i < length; i++, v *= 10) {
         const [digit, name] = wheel.getItem()
-        console.debug(`digit ${digit} : ${name}`)
         if (digit === '1' && v != 1) {
             text = (<any>sino_positional)[v.toString()] + text;
             value += parseInt(digit) * v;
@@ -85,24 +93,39 @@ const generate_sino_korean_number = (length = 1) => {
     }
 }
 
-type QuizInput = 'multi-choice' | 'input'
+function random_native_syllables(size: number) {
+    return shuffle(all_native_syllables).slice(0, size)
+
+}
+
+function random_sino_korean_syllables(size: number) {
+    return shuffle(all_sino_korean_syllables).slice(0, size)
+}
+
+function random_digits(size: number) {
+    return shuffle(['1','2','3','4','5','6','7','8','9','0']).slice(0, size)
+}
+
+type QuizInput = 'multi-choice' | 'input' | 'fill-blanks'
 type NumberSystem = 'Sino-Korean' | 'Native Korean'
 
 export type Quiz = {
     question: string,
-    answer: string
+    answer: string,
+    system: NumberSystem
 } & (
         { type: 'multi-choice', options: string[] } |
-        { type: 'input', system: NumberSystem }
+        { type: 'input' } |
+        { type: 'fill-blanks', tokens: string[], options: string[] }
     )
 
 
 function guess_value(number: number, text: string) {
-    return {question: text, answer: number.toString()}
+    return { question: text, answer: number.toString() }
 }
 
 function guess_name(number: number, text: string) {
-    return {question: number.toString(), answer: text}
+    return { question: number.toString(), answer: text }
 }
 
 export type QuizConfig = {
@@ -149,33 +172,62 @@ export function new_question(config: QuizConfig): Quiz {
 
     // type of quiz
 
-    const inputType = new WeightedWheel([['multi-choice', 3], ['input', 1]] as Weighted<QuizInput>[]).getItem()
+    const inputType = new WeightedWheel([['multi-choice', 3], ['input', 1], ['fill-blanks', 4]] as Weighted<QuizInput>[]).getItem()
 
     if (inputType == 'multi-choice') {
         const direction = random_item([guess_value, guess_name])
 
-        const{number, text} = generator_func(num_digits)
-        const {question, answer} = direction(number, text)
-    
+        const { number, text } = generator_func(num_digits)
+        const { question, answer } = direction(number, text)
+
         const num_options = 4;
-        const options = shuffle(Array.from({length: num_options - 1}, (_) => {
-            const {number,text} = generator_func(num_digits); 
-            return direction(number, text).answer;}
+        const options = shuffle(Array.from({ length: num_options - 1 }, (_) => {
+            const { number, text } = generator_func(num_digits);
+            return direction(number, text).answer;
+        }
         ).concat([answer]))
-    
+
         return {
             type: 'multi-choice',
             question,
             answer,
+            system: number_system,
             options
         }
     } else if (inputType == 'input') {
-        const{number, text} = generator_func(num_digits)
+        const { number, text } = generator_func(num_digits)
         return {
             type: 'input',
             question: number.toString(),
             answer: text,
             system: number_system
+        }
+    } else if (inputType == 'fill-blanks') {
+        const quiz_function = new WeightedWheel([[guess_name, 3], [guess_value, 1]]).getItem()
+        const { number, text } = generator_func(Math.max(num_digits, 3))
+        const { question, answer } = quiz_function(number, text)
+
+        const syllables = answer.split('')
+        const num_blanks = Math.ceil(syllables.length / 4)
+        const blank_positions = shuffle(Array.from(Array(syllables.length), (_, i) => i)).slice(0, num_blanks)
+
+        const tokens = syllables.map((val, index) => (index in blank_positions) ? '' : val)
+        const correct_options = syllables.filter((_, index) => index in blank_positions)
+        const num_random_options = 8 - correct_options.length
+        const other_options = quiz_function == guess_value ? random_digits(num_random_options) :
+            number_system == 'Native Korean' ?
+                random_native_syllables(num_random_options) :
+                random_sino_korean_syllables(num_random_options)
+        let options = shuffle(correct_options.concat(other_options))
+
+
+        return {
+            type: 'fill-blanks',
+            question,
+            answer,
+            system: number_system,
+            tokens: tokens,
+            options: options
         }
     } else {
         throw new Error("Invalid quiz type")

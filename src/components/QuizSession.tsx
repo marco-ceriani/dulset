@@ -23,7 +23,7 @@ function select_input_form(question: Quiz, onAnswer: AnswerHandler) {
         case 'input':
             return <InputText onSubmit={onAnswer}/>
         case 'fill-blanks':
-            return <InputFillBlanks tokens={question.tokens} choices={question.options} onSelect={onAnswer} />
+            return <InputFillBlanks tokens={question.tokens} choices={question.options} onAnswered={onAnswer} />
     }
 }
 

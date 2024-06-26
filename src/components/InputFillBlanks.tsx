@@ -3,32 +3,30 @@ import { useState, useEffect } from 'react'
 interface Props {
     tokens: string[],
     choices: string[],
-    onSelect: (choice: string) => void
+    onAnswered: (choice: string) => void
 }
 
 function nextBlank(values: string[], currentBlank = -1) {
     return values.indexOf('', currentBlank + 1)
 }
 
-const InputFillBlanks = (props: Props) => {
-    console.log(`rendering input: ${JSON.stringify(props)}`)
-    const { tokens, choices, onSelect } = props
-    
-    const [state, setState] = useState({
+function computeState(tokens: string[], choices: string[]) {
+    return {
         index: nextBlank(tokens),
         tokens,
         choices: choices.map(value => ({text: value, enabled: true}))
-    })
-    
-    useEffect(() => {
-        setState({
-            index: nextBlank(tokens),
-            tokens, 
-            choices: choices.map(value => ({text: value, enabled: true}))
-        })
-    }, [tokens, choices])
+    }
+}
 
-    console.log(state)
+const InputFillBlanks = (props: Props) => {
+    const { tokens, choices, onAnswered } = props
+    
+    const [state, setState] = useState(computeState(tokens, choices))
+    useEffect(() => {
+        setState(computeState(tokens, choices))
+    }, [props])
+    
+    console.debug(`rendering InputFillBlanks, props: ${JSON.stringify(props)}, state: ${JSON.stringify(state)}`)
 
     function clickHandler(clickedIndex: number) {
         const newIndex = nextBlank(tokens, state.index)
@@ -43,7 +41,7 @@ const InputFillBlanks = (props: Props) => {
                 choices: new_choices
         })
         if (newIndex == -1) {
-            onSelect(newTokens.join(''))
+            onAnswered(newTokens.join(''))
         }
     }
 
@@ -52,9 +50,9 @@ const InputFillBlanks = (props: Props) => {
         {
             state.tokens.map((item, index) => {
                 if (item == '') {
-                    return <label key={index} className='blank-spot'></label>
+                    return <label key={`blank-${index}`} className='blank-spot'></label>
                 } else {
-                    return <label key={index}>{item}</label>
+                    return <label key={`${item}-${index}`}>{item}</label>
                 }
             })
         }

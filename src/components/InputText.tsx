@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface Props {
     onSubmit: (choice: string) => void
@@ -7,6 +7,10 @@ interface Props {
 const InputText = (props: Props) => {
     const [text, setText] = useState('')
     const { onSubmit } = props
+
+    useEffect(() => {
+        setText('')
+    }, [props])
 
     return <section className="text-input-area">
         <textarea value={text} onChange={(e) => setText(e.target.value)}/>

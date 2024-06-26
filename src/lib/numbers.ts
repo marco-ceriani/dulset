@@ -209,10 +209,9 @@ export function new_question(config: QuizConfig): Quiz {
 
         const syllables = answer.split('')
         const num_blanks = Math.ceil(syllables.length / 4)
-        const blank_positions = shuffle(Array.from(Array(syllables.length), (_, i) => i)).slice(0, num_blanks)
-
-        const tokens = syllables.map((val, index) => (index in blank_positions) ? '' : val)
-        const correct_options = syllables.filter((_, index) => index in blank_positions)
+        const blank_positions = shuffle(Array.from({length: syllables.length}, (_, i) => i)).slice(0, num_blanks)
+        const tokens = syllables.map((val, index) => blank_positions.includes(index) ? '' : val)
+        const correct_options = syllables.filter((_, index) => blank_positions.includes(index))
         const num_random_options = 8 - correct_options.length
         const other_options = quiz_function == guess_value ? random_digits(num_random_options) :
             number_system == 'Native Korean' ?
